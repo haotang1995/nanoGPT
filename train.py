@@ -242,6 +242,8 @@ def get_lr(it):
 if wandb_log and master_process:
     import wandb
     wandb.init(project=wandb_project, name=wandb_run_name, config=config)
+    raw_model = model.module if ddp else model # unwrap DDP container if needed
+    wandb.watch(raw_model, log_freq=1000)
 
 # training loop
 X, Y = get_batch('train') # fetch the very first batch
